@@ -6,11 +6,30 @@ import 'package:weather_app/utils/constants.dart';
 import 'package:weather_app/utils/custom_paint.dart';
 
 class LocationScreen extends StatefulWidget {
+  final locationWeather;
+
+  const LocationScreen({super.key, required this.locationWeather});
+
   @override
   LocationScreenState createState() => LocationScreenState();
 }
 
 class LocationScreenState extends State<LocationScreen> {
+  late int temp;
+  var locationName;
+  @override
+  void initState() {
+    super.initState();
+    var data = widget.locationWeather;
+    double tempe = data['main']['temp'];
+    temp = tempe.toInt();
+    /*var tempC = (tempk - 273.15);
+    temp = tempC.toStringAsFixed(2);*/
+    locationName = data['name'];
+
+    print('${temp} : $locationName');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +62,7 @@ class LocationScreenState extends State<LocationScreen> {
                   children: <Widget>[
                     Expanded(
                       child: Text(
-                        '23°',
+                        '$temp°C',
                         style: kTempTextStyle,
                       ),
                     ),
@@ -88,7 +107,7 @@ class LocationScreenState extends State<LocationScreen> {
                     Padding(
                       padding: EdgeInsets.only(right: 15.0),
                       child: Text(
-                        'Dhaka',
+                        '$locationName',
                         textAlign: TextAlign.center,
                         style: kSmallTextStyle.copyWith(
                           fontSize: 16.0,
