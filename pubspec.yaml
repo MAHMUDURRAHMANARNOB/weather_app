@@ -1,0 +1,41 @@
+name: weather_app
+description: A new Flutter project.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.6 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  geolocator: ^9.0.2
+  http: ^1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: Museo Moderno
+      fonts:
+        - asset: assets/fonts/MuseoModerno-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/MuseoModerno-Light.ttf
+          weight: 200
+        - asset: assets/fonts/MuseoModerno-Regular.ttf
+          weight: 300
+        - asset: assets/fonts/MuseoModerno-Medium.ttf
+          weight: 400
+        - asset: assets/fonts/MuseoModerno-SemiBold.ttf
+          weight: 500
+        - asset: assets/fonts/MuseoModerno-Bold.ttf
+          weight: 700
