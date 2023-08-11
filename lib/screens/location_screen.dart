@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:weather_app/screens/city_screen.dart';
+import 'package:weather_app/services/weather.dart';
 import 'package:weather_app/utils/constants.dart';
 import 'package:weather_app/utils/custom_paint.dart';
 
@@ -15,19 +16,47 @@ class LocationScreen extends StatefulWidget {
 }
 
 class LocationScreenState extends State<LocationScreen> {
-  late int temp;
-  var locationName;
+  late var temp;
+  late var maxTemp;
+  late var minTemp;
+  late var windSpeed;
+  late var feelsLike;
+  late var humidity;
+  late var locationName;
+
   @override
   void initState() {
     super.initState();
-    var data = widget.locationWeather;
-    double tempe = data['main']['temp'];
-    temp = tempe.toInt();
-    /*var tempC = (tempk - 273.15);
-    temp = tempC.toStringAsFixed(2);*/
-    locationName = data['name'];
+    updateUI(widget.locationWeather);
+  }
 
-    print('${temp} : $locationName');
+  void updateUI(dynamic weatherData) {
+    setState(() {
+      if(weatherData == null){
+        temp = 0;
+        maxTemp = 0;
+        minTemp = 0;
+        windSpeed = 0;
+        feelsLike = 0;
+        humidity = 0;
+        locationName = 'Error!';
+        return;
+      }
+      /*var data = widget.locationWeather;*/
+      num tempe = weatherData['main']['temp'];
+      temp = tempe.toInt();
+      num maxTempe = weatherData['main']['temp_max'];
+      maxTemp = maxTempe.toInt();
+      num minTempe = weatherData['main']['temp_min'];
+      minTemp = minTempe.toInt();
+      feelsLike = weatherData['main']['feels_like'];
+      humidity = weatherData['main']['humidity'];
+      windSpeed = weatherData['wind']['speed'] *
+          3.6; // wind speed comes in ms-1. so had to multiply with 3.6 since 1 ms-1 == 3.6 kmh-1.
+      locationName = weatherData['name'];
+
+      print('$temp : $locationName : $windSpeed : $humidity : $feelsLike');
+    });
   }
 
   @override
@@ -67,7 +96,10 @@ class LocationScreenState extends State<LocationScreen> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        updateUI(widget.locationWeather);
+                        ;
+                      },
                       child: Image.asset(
                         'assets/images/ic_current_location.png',
                         width: 32.0,
@@ -135,6 +167,31 @@ class LocationScreenState extends State<LocationScreen> {
                           style: kConditionTextStyle.copyWith(fontSize: 16.0),
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ConditionRow(
+                            icon: 'assets/images/ic_temp.png',
+                            title: "Min Temp",
+                            value: '$minTemp°C',
+                          ),
+                          ConditionRow(
+                            icon: 'assets/images/ic_temp.png',
+                            title: "Max Temp",
+                            value: '$maxTemp°C',
+                          ),
+                          ConditionRow(
+                            icon: 'assets/images/ic_wind_speed.png',
+                            title: "Wind Speed",
+                            value: '${windSpeed.toStringAsFixed(1)} Km/h',
+                          ),
+                          ConditionRow(
+                            icon: 'assets/images/ic_humidity.png',
+                            title: "humidity",
+                            value: '$humidity%',
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -143,6 +200,43 @@ class LocationScreenState extends State<LocationScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ConditionRow extends StatelessWidget {
+  final String icon;
+  final String title;
+  final String value;
+
+  const ConditionRow(
+      {super.key,
+      required this.icon,
+      required this.title,
+      required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Image.asset(
+          icon,
+          width: 24,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 8.0,
+          ),
+          child: Text(
+            title,
+            style: kConditionTextStyleSmall,
+          ),
+        ),
+        Text(
+          value,
+          style: kConditionTextStyle,
+        )
+      ],
     );
   }
 }

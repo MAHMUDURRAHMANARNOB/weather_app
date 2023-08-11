@@ -5,6 +5,7 @@ import 'package:weather_app/screens/location_screen.dart';
 import 'package:weather_app/services/location.dart';
 import 'package:weather_app/services/network.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:weather_app/services/weather.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -23,7 +24,10 @@ class LoadingScreenState extends State<LoadingScreen> {
   }
 
   void getWeatherLocationData() async {
-    Location location = Location();
+    /*WeatherModel weatherModel = WeatherModel();*/
+    var weatherData = await WeatherModel().getWeatherData();
+    print("LoadingScreen "+weatherData.toString());
+    /*Location location = Location();
     await location.getLocation();
 
     String url =
@@ -31,7 +35,7 @@ class LoadingScreenState extends State<LoadingScreen> {
     NetworkHelper networkHelper = NetworkHelper(url);
     var weatherData = await networkHelper.getData();
 
-    print(weatherData.toString());
+    print(weatherData.toString());*/
 
     Navigator.push(
       context,
