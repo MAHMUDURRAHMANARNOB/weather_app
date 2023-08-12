@@ -32,7 +32,7 @@ class LocationScreenState extends State<LocationScreen> {
 
   void updateUI(dynamic weatherData) {
     setState(() {
-      if(weatherData == null){
+      if (weatherData == null) {
         temp = 0;
         maxTemp = 0;
         minTemp = 0;
@@ -107,13 +107,19 @@ class LocationScreenState extends State<LocationScreen> {
                     ),
                     SizedBox(width: 24.0),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        var typedCityName = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => CityScreen(),
                           ),
                         );
+                        print(typedCityName);
+                        if (typedCityName != null) {
+                          var weatherData = await WeatherModel()
+                              .getCityWeather(typedCityName);
+                          updateUI(weatherData);
+                        }
                       },
                       child: Image.asset(
                         'assets/images/ic_search.png',

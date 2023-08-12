@@ -9,6 +9,7 @@ class CityScreen extends StatefulWidget {
 }
 
 class CityScreenState extends State<CityScreen> {
+  String cityName = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,13 +41,44 @@ class CityScreenState extends State<CityScreen> {
               ),
               Container(
                 padding: EdgeInsets.all(20.0),
-                child: null,
+                child: TextField(
+                  style: TextStyle(
+                    fontFamily: 'Museo Moderno',
+                    color: Colors.black,
+                  ),
+                  decoration: /*InputDecoration(
+                    filled: true, //for making a shadow
+                    fillColor: Colors.white,
+                    icon: Icon(
+                      Icons.location_city,
+                      color: Colors.white,
+                    ),
+                    hintText: 'Enter Your City',
+                    hintStyle: TextStyle(
+                      fontFamily: 'Museo Moderno',
+                      color: Colors.grey,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.4),
+                      ),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),*/
+                      kTextFieldInputDecoration,
+                  onChanged: (value) {
+                    cityName = value;
+                  },
+                ),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: StadiumBorder(),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context, cityName);
+                  print(cityName);
+                },
                 child: Text(
                   'Search Weather',
                   style: kButtonTextStyle,
